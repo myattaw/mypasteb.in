@@ -4,9 +4,9 @@
 }
 
 body {
-	background: #002B36;
-	padding: 20px 50px;
-	margin: 0px;
+  background: #002b36;
+  padding: 20px 50px;
+  margin: 0px;
 }
 
 #key-box {
@@ -18,57 +18,59 @@ body {
 }
 
 #key-header-box {
-	padding: 5px;
-	text-align: center;
-	background: #00222b;
+  padding: 5px;
+  text-align: center;
+  background: #00222b;
 }
 
 #key-footer-box {
   text-align: center;
-	background: #08323c;
-	font-size: 0px;
-	padding: 0px 5px;
+  background: #08323c;
+  font-size: 0px;
+  padding: 0px 5px;
 }
 
-#key-desc-box, #messages li {
-	background: #173e48;
-	font-family: Helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 14px;
-	padding: 10px 15px;
+#key-desc-box,
+#messages li {
+  background: #173e48;
+  font-family: Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 10px 15px;
 }
 
-#key-desc-box .label, #messages li {
-	font-weight: bold;
+#key-desc-box .label,
+#messages li {
+  font-weight: bold;
 }
 
 #key-desc-box .shortcut {
-	color: #c4dce3;
-	font-weight: normal;
+  color: #c4dce3;
+  font-weight: normal;
 }
 
 textarea {
-	background: transparent;
-	border: 0px;
-	color: #fff;
-	padding: 0px;
-	width: 100%;
-	height: 100%;
-	font-family: monospace;
-	outline: none;
-	resize: none;
-	font-size: 13px;
+  background: transparent;
+  border: 0px;
+  color: #fff;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  font-family: monospace;
+  outline: none;
+  resize: none;
+  font-size: 13px;
 }
 
 /* the line numbers */
 #linenos {
   color: #7d7d7d;
-	z-index: -1000;
-	position: absolute;
-	top: 20px;
-	left: 0px;
-	width: 30px; /* 30 to get 20 away from box */
-	font-size: 13px;
-	font-family: monospace;
-	text-align: right;
+  z-index: -1000;
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  width: 30px; /* 30 to get 20 away from box */
+  font-size: 13px;
+  font-family: monospace;
+  text-align: right;
 }
