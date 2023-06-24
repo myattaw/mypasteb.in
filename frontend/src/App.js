@@ -12,15 +12,13 @@ function App() {
   const [pasteContent, setPasteContent] = useState("");
 
   const handleMouseEnter = (label, shortcut) => {
-    if (!pasteContent) {
-      setKeyDescContent(
-        <div>
-          <div className="label">{label}</div>
-          <div className="shortcut">{shortcut}</div>
-        </div>
-      );
-      setIsHoveringButton(true);
-    }
+    setKeyDescContent(
+      <div>
+        <div className="label">{label}</div>
+        <div className="shortcut">{shortcut}</div>
+      </div>
+    );
+    setIsHoveringButton(true);
   };
 
   const handleMouseLeave = () => {
@@ -32,9 +30,9 @@ function App() {
     setTextareaContent(event.target.value);
   };
 
-  const handleSave = () => {
+  const handleSave = (content) => {
     const payload = {
-      content: textareaContent,
+      content: content,
     };
 
     fetch("http://localhost:3000/api/paste-create", {
@@ -47,12 +45,29 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Paste created successfully:", data);
-        setPasteContent(textareaContent);
+        setPasteContent(content);
+        const shareCode = data.share_code; // get shareCode from API response
+        window.location.href = `/${shareCode}`;
       })
       .catch((error) => {
         console.error("Error creating paste:", error);
       });
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault(); // Prevent the default browser save action
+        handleSave(textareaContent);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [textareaContent]);
 
   useEffect(() => {
     const url = window.location.href;
@@ -73,7 +88,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className={`App ${pasteContent ? "pasteViewer" : "pasteCreator"}`}>
       <div id="key-box">
         <div id="key-header-box">
           <h1>MYpasteb.in</h1>
@@ -85,7 +100,7 @@ function App() {
             onMouseEnter={() => handleMouseEnter("Save", "control + s")}
             onMouseLeave={handleMouseLeave}
             style={{ color: "#c4dce3" }}
-            onClick={handleSave}
+            onClick={() => handleSave(textareaContent)}
           >
             Save
           </Button>
@@ -103,7 +118,7 @@ function App() {
         {isHoveringButton && <div id="key-desc-box">{keyDescContent}</div>}
       </div>
 
-      {/* <div id="linenos">&gt;</div> */}
+      {pasteContent ? null : <div id="linenos">&gt;</div>}
 
       {pasteContent ? (
         <pre>

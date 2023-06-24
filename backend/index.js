@@ -21,6 +21,15 @@ async function main() {
     console.log("Last paste:");
     console.log(lastest);
 
+    // clears the db for testing
+    // collection.deleteMany({}, function(err, result) {
+    //   if (err) {
+    //     console.error('Error deleting documents:', err);
+    //   } else {
+    //     console.log('Deleted', result.deletedCount, 'documents from', collectionName);
+    //   }
+    // });
+
     return "Successfully connected to the database.";
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
