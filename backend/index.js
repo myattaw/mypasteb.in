@@ -107,3 +107,25 @@ app.listen(port, async () => {
 app.get("/", (req, res) => {
   res.send("Express test");
 });
+
+// Route for viewing paste content based on share code
+app.get("/:share_code", async (req, res) => {
+  try {
+    const share_code = req.params.share_code;
+
+    // Retrieve the paste entry from the collection based on the share code
+    const collection = db.collection("pastes");
+    const pasteEntry = await collection.findOne({ share_code });
+
+    if (!pasteEntry) {
+      // If no paste entry is found, render an error page or display a message indicating that the paste was not found
+      return res.status(404).send("Paste not found");
+    }
+
+    // If the paste entry is found, render the paste content view
+    res.send(pasteEntry.content);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});

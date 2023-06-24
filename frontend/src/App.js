@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,15 +9,18 @@ function App() {
   const [keyDescContent, setKeyDescContent] = useState(null);
   const [isHoveringButton, setIsHoveringButton] = useState(false);
   const [textareaContent, setTextareaContent] = useState("");
+  const [pasteContent, setPasteContent] = useState("");
 
   const handleMouseEnter = (label, shortcut) => {
-    setKeyDescContent(
-      <div>
-        <div className="label">{label}</div>
-        <div className="shortcut">{shortcut}</div>
-      </div>
-    );
-    setIsHoveringButton(true);
+    if (!pasteContent) {
+      setKeyDescContent(
+        <div>
+          <div className="label">{label}</div>
+          <div className="shortcut">{shortcut}</div>
+        </div>
+      );
+      setIsHoveringButton(true);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -44,11 +47,30 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Paste created successfully:", data);
+        setPasteContent(textareaContent);
       })
       .catch((error) => {
         console.error("Error creating paste:", error);
       });
   };
+
+  useEffect(() => {
+    const url = window.location.href;
+    const shareCode = url.substring(url.lastIndexOf("/") + 1);
+
+    if (shareCode) {
+      fetch(`http://localhost:3000/api/paste-fetch?share_code=${shareCode}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.pasteEntry) {
+            setPasteContent(data.pasteEntry.content);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching paste:", error);
+        });
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -80,12 +102,26 @@ function App() {
 
         {isHoveringButton && <div id="key-desc-box">{keyDescContent}</div>}
       </div>
-      <div id="linenos">&gt;</div>
-      <textarea
-        spellCheck="false"
-        value={textareaContent}
-        onChange={handleTextareaChange}
-      ></textarea>
+
+      {/* <div id="linenos">&gt;</div> */}
+
+      {pasteContent ? (
+        <pre>
+          {pasteContent.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              <span className="line-number">{index + 1}</span>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </pre>
+      ) : (
+        <textarea
+          spellCheck="false"
+          value={textareaContent}
+          onChange={handleTextareaChange}
+        ></textarea>
+      )}
     </div>
   );
 }
