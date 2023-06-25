@@ -8,6 +8,7 @@ app.use(cors());
 
 let db;
 
+
 async function main() {
   try {
     db = await connectDB();

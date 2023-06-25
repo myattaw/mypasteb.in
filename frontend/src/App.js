@@ -5,6 +5,9 @@ import { Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import AddIcon from "@mui/icons-material/Add";
 
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 function App() {
   const [keyDescContent, setKeyDescContent] = useState(null);
   const [isHoveringButton, setIsHoveringButton] = useState(false);
@@ -121,15 +124,11 @@ function App() {
       {pasteContent ? null : <div id="linenos">&gt;</div>}
 
       {pasteContent ? (
-        <pre>
-          {pasteContent.split("\n").map((line, index) => (
-            <React.Fragment key={index}>
-              <span className="line-number">{index + 1}</span>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </pre>
+        <SyntaxHighlighter
+          language="java"
+          style={solarizedlight}
+          showLineNumbers
+        >{pasteContent}</SyntaxHighlighter>
       ) : (
         <textarea
           spellCheck="false"

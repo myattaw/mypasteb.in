@@ -6,7 +6,6 @@
 
 .pasteViewer {
   font-family: Helvetica, sans-serif;
-  height: 90vh;
 }
 
 body {
@@ -82,27 +81,26 @@ textarea {
 }
 
 pre {
-  background: transparent;
+  background: transparent !important; 
   border: 0px;
   color: #fff;
-  padding: 0px;
-  margin: 0px;
+  padding: 0px !important;
+  margin: 0px !important;
   width: 100%;
   height: 100%;
   font-family: monospace;
   outline: none;
   resize: none;
-  font-size: 13px;
+  font-size: 13px !important;
   position: relative;
 }
 
-.line-number {
+.linenumber {
   display: inline-block;
-  width: 30px;
-  text-align: center;
-  padding-right: 5px;
-  margin-right: 2px;
-  color: #7d7d7d;
+  text-align: center !important;
+  padding: 0 !important;
+  min-width: 2.25em !important;
+  margin-right: 5px;
+  color: #7d7d7d !important;
   background-color: #00222b; /* Background color of the line number column */
-  user-select: none;
 }
