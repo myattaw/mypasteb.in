@@ -1,13 +1,38 @@
 const express = require("express");
 const { connectDB } = require("./database");
 const cors = require("cors");
+const hljs = require("highlight.js");
+
+// Specify the allowed languages
+const allowedLanguages = [
+  "javascript",
+  "python",
+  "java",
+  "c",
+  "cpp",
+  "csharp",
+  "ruby",
+  "go",
+  "swift",
+  "php",
+  "rust",
+  "kotlin",
+  "scala",
+  "perl",
+  "r",
+  "matlab",
+  "shell",
+  "objectivec",
+  "vbnet",
+  "html",
+  "yaml",
+];
 
 const app = express();
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors());
 
 let db;
-
 
 async function main() {
   try {
@@ -46,21 +71,24 @@ app.post("/api/paste-create", async (req, res) => {
     // Get paste content from request body
     const content = req.body.content;
 
+    const detectedLanguage = hljs.highlightAuto(
+      content,
+      allowedLanguages
+    ).language;
+    console.log(`detected language: ${detectedLanguage}`);
+
     // Create a new paste entry document
     const pasteEntry = {
-      password: "",
       content,
-      createdAt: new Date(),
       share_code,
+      language: detectedLanguage,
+      password: "",
+      createdAt: new Date(),
     };
-
-    console.log(pasteEntry);
 
     // Insert the paste entry into the collection
     const collection = db.collection("pastes");
-    const result = await collection.insertOne(pasteEntry);
-
-    console.log(result);
+    await collection.insertOne(pasteEntry);
 
     res.status(201).json({ share_code });
   } catch (error) {

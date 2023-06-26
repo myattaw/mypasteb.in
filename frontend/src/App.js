@@ -13,6 +13,7 @@ function App() {
   const [isHoveringButton, setIsHoveringButton] = useState(false);
   const [textareaContent, setTextareaContent] = useState("");
   const [pasteContent, setPasteContent] = useState("");
+  const [pasteLanguage, setPasteLanguage] = useState("");
 
   const handleMouseEnter = (label, shortcut) => {
     setKeyDescContent(
@@ -49,6 +50,7 @@ function App() {
       .then((data) => {
         console.log("Paste created successfully:", data);
         setPasteContent(content);
+        setPasteLanguage(data.language);
         const shareCode = data.share_code; // get shareCode from API response
         window.location.href = `/${shareCode}`;
       })
@@ -82,6 +84,7 @@ function App() {
         .then((data) => {
           if (data.pasteEntry) {
             setPasteContent(data.pasteEntry.content);
+            setPasteLanguage(data.pasteEntry.language);
           }
         })
         .catch((error) => {
@@ -125,10 +128,12 @@ function App() {
 
       {pasteContent ? (
         <SyntaxHighlighter
-          language="java"
+          language={pasteLanguage}
           style={solarizedlight}
           showLineNumbers
-        >{pasteContent}</SyntaxHighlighter>
+        >
+          {pasteContent}
+        </SyntaxHighlighter>
       ) : (
         <textarea
           spellCheck="false"
