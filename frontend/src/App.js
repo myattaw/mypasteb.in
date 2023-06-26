@@ -59,11 +59,21 @@ function App() {
       });
   };
 
+  const redirectToParentDirectory = () => {
+    const url = window.location.href;
+    const parentDirectoryUrl = url.substring(0, url.lastIndexOf("/"));
+    window.location.href = parentDirectoryUrl;
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault(); // Prevent the default browser save action
         handleSave(textareaContent);
+      }
+      if (event.ctrlKey && event.altKey && event.key === "n") {
+        event.preventDefault(); // Prevent the default browser save action
+        redirectToParentDirectory();
       }
     };
 
@@ -113,9 +123,10 @@ function App() {
           <Button
             className="new function"
             startIcon={<AddIcon />}
-            onMouseEnter={() => handleMouseEnter("New", "control + n")}
+            onMouseEnter={() => handleMouseEnter("New", "control + alt + n")}
             onMouseLeave={handleMouseLeave}
             style={{ color: "#c4dce3" }}
+            onClick={() => redirectToParentDirectory()}
           >
             New
           </Button>
